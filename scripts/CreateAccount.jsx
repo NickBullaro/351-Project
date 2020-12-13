@@ -25,9 +25,7 @@ function createAccount() {
   
   function handleBadCreation() {
     React.useEffect(() => {
-        console.log("badcreate");
         Socket.on("bad creation", (data) => {
-            console.log("set bad message");
             setStatus(true);
             setMessage(data['message']);
         });
@@ -37,25 +35,31 @@ function createAccount() {
   handleBadCreation();
 
   return (
-    <div>
+    <div className="createAccBox">
       {
           status
           ? <div className="badCreationMessage">{message}</div>
           : ''
       }
       <form onSubmit={handleSubmit}>
-        <div className="container">
-          <label htmlFor="email"><b>Email</b></label>
-          <input id="emailCreate" type="text" placeholder="Enter Email" name="email" required></input>
+        <div className="createAccountContainer">
+          <div className="createEmail">
+            <label htmlFor="email"><b>Email</b></label>
+            <input id="emailCreate" type="text" placeholder="Enter Email" name="email" required></input>
+          </div>
           
-          <label htmlFor="username"><b>Username</b></label>
-          <input id="usernameCreate" type="text" placeholder="Enter Username" name="username" required></input>
+          <div className="createUsername">
+            <label htmlFor="username"><b>Username</b></label>
+            <input id="usernameCreate" type="text" placeholder="Enter Username" name="username" required></input>
+          </div>
       
-          <label htmlFor="psw"><b>Password</b></label>
-          <input id="passwordCreate" type="password" placeholder="Enter Password" name="psw" required></input>
+          <div className="createPassword">
+            <label htmlFor="psw"><b>Password</b></label>
+            <input id="passwordCreate" type="password" placeholder="Enter Password" name="psw" required></input>
+          </div>
       
           <div className="clearfix">
-            <button type="submit" className="signupbtn">Sign Up</button>
+            <button type="submit" className="createAccountButton">Sign Up</button>
           </div>
         </div>
       </form>

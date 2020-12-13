@@ -9,7 +9,6 @@ function LoginField() {
     function handleSubmit(event) {
         const newPassword = document.getElementById('passwordInput');
         const newEmail = document.getElementById('emailInput');
-        console.log("handle");
 
         Socket.emit('new login attempt', {
           password: newPassword.value,
@@ -23,9 +22,7 @@ function LoginField() {
     
     function handleIncorrectLogin() {
         React.useEffect(() => {
-            console.log("bad");
             Socket.on("bad login", (data) => {
-                console.log("set bad message");
                 setStatus(true);
                 setMessage(data['message']);
             });
@@ -34,22 +31,25 @@ function LoginField() {
     
     handleIncorrectLogin();
     return (
-        <div>
+        <div className="loginBox">
             {
                 status
                 ? <div className="badLoginMessage">{message}</div>
                 : ''
             }
             <form onSubmit={handleSubmit}>
-              <div className="container">
-                <label htmlFor="email"><b>Email</b></label>
-                <input id="emailInput" type="text" placeholder="Enter Email" name="email" required></input>
-            
-                <label htmlFor="psw"><b>Password</b></label>
-                <input id="passwordInput" type="password" placeholder="Enter Password" name="psw" required></input>
+              <div className="LoginContainer">
+                <div className="loginEmail">
+                    <label htmlFor="email"><b>Email</b></label>
+                    <input id="emailInput" type="text" placeholder="Enter Email" name="email" required></input>
+                </div>
+                <div className="loginPassword">
+                    <label htmlFor="psw"><b>Password</b></label>
+                    <input id="passwordInput" type="password" placeholder="Enter Password" name="psw" required></input>
+                </div>
             
                 <div className="clearfix">
-                  <button type="submit" className="signupbtn">Log In</button>
+                  <button type="submit" className="loginButton">Log In</button>
                 </div>
               </div>
             </form>

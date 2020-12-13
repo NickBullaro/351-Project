@@ -8,14 +8,13 @@ const LoggedInContent = ({sid, username, email, user}) => {
   
   function setup() {
     React.useEffect(() => {
-      console.log("setup");
     });
   }
   
   setup();
 
   return (
-    <div id="loggedInContent">
+    <div className="loggedInContent" id="loggedInContent">
       <UserList />
       <SendMessage />
       <SendMessageButton  sid={sid} username={username} email={email} user={user}/>

@@ -14,7 +14,6 @@ function Content() {
   function setup() {
     React.useEffect(() => {
       Socket.on('login accepted', (data) => {
-        console.log("accepted");
         setLoginState(true);
         setSID(data['sid']);
         setUsername(data['username']);

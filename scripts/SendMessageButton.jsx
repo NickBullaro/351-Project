@@ -32,12 +32,12 @@ const SendMessageButton = ({sid, username, email, user}) => {
     console.log('Sent the encrypted message:', encryptedHex);
     encryptedHex = '';
     newUsername.value = '';
-    
+    text.value = '';
     event.preventDefault();
   }
 
   return (
-    <form onSubmit={handleSubmit} className="submitButton">
+    <form onSubmit={handleSubmit} className="messageSubmitButton">
       <input id="usernameSelect" placeholder="Enter username" className="username" required/>
       <input id="message_input" placeholder="Enter a message" className="input" autoComplete="off" required/>
       <button className="addButton" type="submit">Send</button>

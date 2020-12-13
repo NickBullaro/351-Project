@@ -4,12 +4,7 @@ import LoginField from './LoginField';
 
 
 function LoginScreen() {
-  function Refresh() {
-    return;
-  }
   
-  
-  //TODO - Add create account option
   return (
     <div id="loginScreen">
       <h2>Create an Account!</h2>

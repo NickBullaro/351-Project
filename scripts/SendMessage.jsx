@@ -9,9 +9,7 @@ const SendMessage = () => {
 
   function getNewMessage() {
     React.useEffect(() => {
-      console.log("me", Socket.id);
       Socket.on(Socket.id, (data) => {
-        console.log("got message");
         console.log("Received the encrypted message:", data['message']);
             // When ready to decrypt the hex string, convert it back to bytes
         var encryptedBytes = aesjs.utils.hex.toBytes(data['message']);
@@ -23,7 +21,6 @@ const SendMessage = () => {
          
         // Convert our bytes back into text
         var decryptedText = aesjs.utils.utf8.fromBytes(decryptedBytes);
-        console.log(decryptedText);
         setMessage(data['senderName'] + " : " + decryptedText);
         console.log("Decrypted the message:", decryptedText);
       });

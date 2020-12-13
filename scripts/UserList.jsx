@@ -8,7 +8,6 @@ function UserList() {
   function getNewUser() {
     React.useEffect(() => {
       Socket.on('users received', (data) => {
-        console.log("Received new users list");
         setUsers(Object.keys(data['all_users']));
         setIds(data['all_ids']);
       });
@@ -19,7 +18,8 @@ function UserList() {
   getNewUser();
 
   return (
-    <div className="container userListing">
+    <div className="container" id="userListing">
+      <h1 className="userListTitle">User List</h1>
       <div className="userListing">
         {
           users.map((user, index) => 
