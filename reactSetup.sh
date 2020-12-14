@@ -7,5 +7,5 @@ pip install eventlet
 npm install -g webpack
 npm install --save-dev webpack
 npm install socket.io-client --save
-npm install -g heroku
 pip install requests
+npm install aes-js
