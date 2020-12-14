@@ -8,13 +8,10 @@ from dotenv import load_dotenv
 import flask
 import flask_socketio
 import models
-import ssl
 import hashlib
 
 DOTENV_PATH = os.path.join(os.path.dirname(__file__), "keys.env")
 load_dotenv(DOTENV_PATH)
-cer = os.path.join(os.path.dirname(__file__), 'cert.pem')
-key =os.path.join(os.path.dirname(__file__), 'key.pem')
 
 username_taken = False
 email_used = False
@@ -41,7 +38,6 @@ def database_init():
 
 
 def checkLogin(email, password):
-    print("test login")
     check = models.DB.session.query(models.CreateAccount).filter_by(email=email).first()
     if(check):
         if(check.password == password):
@@ -58,7 +54,6 @@ def emit_all_users():
     for current_connections_row in current_connections_rows:
         all_users.append(current_connections_row.username)
         all_user_ids.append(current_connections_row.id)
-    print("users: ", all_users)
     socketio.emit('users received', {"all_users": users, 'all_ids': all_user_ids})
 
 def clear_non_persistent_tables():
@@ -77,14 +72,14 @@ def on_disconnect():
         .filter_by(sid=flask.request.sid)
         .first()
     )
-    models.DB.session.delete(disconnected_user)
-    models.DB.session.commit()
-    del users[disconnected_user.username]
+    if(disconnected_user):
+        models.DB.session.delete(disconnected_user)
+        models.DB.session.commit()
+        del users[disconnected_user.username]
     emit_all_users()
     
 @socketio.on("new login attempt")
 def on_new_login(data):
-    print("login attempt")
     h = hashlib.md5(data['password'].encode())
     result = checkLogin(data['email'], h.hexdigest())
     if(result == 'Login accepted'):
@@ -92,6 +87,7 @@ def on_new_login(data):
         models.DB.session.add(models.CurrentConnections(flask.request.sid, username, data['email']))
         models.DB.session.commit()
         users[username] = flask.request.sid
+        print("Login accepted for user:", username)
         socketio.emit("login accepted", {
             'sid': flask.request.sid,
             'username': username,
@@ -99,10 +95,12 @@ def on_new_login(data):
             'users': users
         })
     elif(result == 'Invalid email or password!'):
+        print("Login rejected for reason:", result)
         socketio.emit('bad login', {
             'message': 'Invalid email or password!'
         })
     elif(result == 'No account exists with that email!'):
+        print("Login rejected for reason:", result)
         socketio.emit('bad login', {
             'message': 'No account exists with that email!'
         })
